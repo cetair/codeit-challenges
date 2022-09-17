@@ -41,7 +41,7 @@ def message():
     headers = {"Content-Type": "text/plain", "Accept": "text/plain"}
     return make_response(request.data.decode(), 200, headers=headers)
 
-@app.route('/cryptocollapz', methods=['POST'])
+@app.route('/travelling-suisse-robot', methods=['POST'])
 def robot():
     output = ""
     map = message()
