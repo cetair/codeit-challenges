@@ -5,7 +5,7 @@ logger = logging.getLogger(__name__)
 
 @app.route('/', methods=['GET'])
 def default_route():
-    return "Hello World 3"
+    return "Python Template"
 
 
 logger = logging.getLogger()
@@ -16,6 +16,12 @@ handler.setFormatter(formatter)
 logger.addHandler(handler)
 logger.setLevel(logging.INFO)
 
+
+
 if __name__ == "__main__":
     logging.info("Starting application ...")
-    app.run(port=8080)
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.bind(('localhost', 0))
+    port = sock.getsockname()[1]
+    sock.close()
+    app.run(port=port)
