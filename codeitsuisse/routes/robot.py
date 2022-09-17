@@ -4,6 +4,8 @@ from flask import request, make_response
 
 from codeitsuisse import app
 
+import logging
+
 TARGET = "CODEITSUISSE"
 
 def get_coordinates(map):
@@ -45,6 +47,7 @@ def message():
 def robot():
     output = ""
     map = message()
+    logging.info(map)
     coordinates = get_coordinates(map)
 
     facing = 'up'
