@@ -46,5 +46,5 @@ def crypo_fall():
 
     r = Response(output, mimetype='application/json')
     r.headers["Content-Type"] = "application/json"
-    return r
+    return json.dumps(r)
     

@@ -134,9 +134,11 @@ def to_cumulative_delayed():
   sorted_timestamp, sorted_ticker = heapsort(stream)
   for _ in range(len(sorted_timestamp)):
     timestamp = extract_min(sorted_timestamp)
+    time = 0
     encounter = []
     for _ in range(len(sorted_ticker[timestamp])):
       data = extract_min(sorted_ticker[timestamp], False)
+      time = data[0]
       try:
         quantity, price = int(data[2]), float(data[3])
         if data[1] in history:
@@ -145,11 +147,14 @@ def to_cumulative_delayed():
             room_to_fill = quantity_block - history[data[1]][0]
             cumulative_notional = history[data[1]][1] + round(room_to_fill * price, 1)
             history[data[1]][3] += quantity_block
-            history[data[1]][2] += round(room_to_fill * price, 1)
+            history[data[1]][2] += cumulative_notional
             history[data[1]][2] = round(history[data[1]][2], 1)
             history[data[1]][0] = 0
             history[data[1]][1] = 0
             quantity -= room_to_fill
+
+            if data[1] not in encounter:
+              encounter.append(data[1])
 
           history[data[1]][0] += quantity
           history[data[1]][1] += round(quantity * price, 1)
@@ -163,17 +168,16 @@ def to_cumulative_delayed():
             digest += quantity_block
             quantity -= quantity_block
 
+          encounter.append(data[1])
+
           history[data[1]] = [quantity, round(quantity * price, 1), cumulative_notional, digest]
 
       except ValueError:
         print("Error during Conversion Process")
         return -1
 
-      if data[1] not in encounter:
-        encounter.append(data[1])
-
     for ticker in encounter:
-      temp = f"{timestamp},{ticker},{history[ticker][3]},{history[ticker][2]}"
+      temp = f"{time},{ticker},{history[ticker][3]},{history[ticker][2]}"
       output.append(temp)
 
   return {"output": output}
