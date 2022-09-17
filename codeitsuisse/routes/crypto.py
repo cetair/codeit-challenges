@@ -39,7 +39,6 @@ def solve(arr):
 @app.route('/cryptocollapz', methods=['POST'])
 def crypo_fall():
     data = request.get_json()
-    logging.info(data)
 
     output = []
     for arr in data:

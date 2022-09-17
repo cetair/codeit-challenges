@@ -89,7 +89,7 @@ def heapsort(array: list):
   return trees, hashmap
 
 @app.route('/tickerStreamPart1', methods=['POST'])
-def to_cumulative(stream: list):
+def to_cumulative():
   data = request.get_json()
   stream = data.get("stream")
   output = []
