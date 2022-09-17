@@ -1,6 +1,6 @@
 import json
 
-from flask import request, make_response
+from flask import request, Response
 
 from codeitsuisse import app
 
@@ -44,7 +44,6 @@ def crypo_fall():
     for arr in data:
         output.append(solve(arr))
 
-    resp = make_response(output)
-    resp.headers['Content-Type'] = "application/json"
-    return resp
+    return Response(output, mimetype='application/json')
+
     

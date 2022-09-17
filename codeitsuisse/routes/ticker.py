@@ -116,7 +116,7 @@ def to_cumulative():
     temp = temp[:-1]
     output.append(temp)
 
-  return output
+  return {"output": output}
 
 @app.route('/tickerStreamPart2', methods=['POST'])
 def to_cumulative_delayed():
@@ -159,4 +159,4 @@ def to_cumulative_delayed():
         print("Error during Conversion Process")
         return -1
 
-  return output
+  return {"output": output}
