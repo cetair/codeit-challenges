@@ -1,7 +1,7 @@
 import json
 
-from flask import request, jsonify
-import logging
+from flask import request, make_response
+
 from codeitsuisse import app
 
 history = {1:4}
@@ -43,5 +43,8 @@ def crypo_fall():
     output = []
     for arr in data:
         output.append(solve(arr))
+
+    resp = make_response(output)
+    resp.headers['Content-Type'] = "application/json"
+    return resp
     
-    return json.dumps(output)
