@@ -30,11 +30,7 @@ def calendar_dates(list: List):
         elif(arr[i] == 'mtwtf  ,'):
             arr[i] = 'weekdays,'
     res = ''.join(arr)
-    result = '"'+res+'"'
-    print(result)
-    return result
-
-calendar_dates([2022,38, 39, 40, 42, 41])
+    return res
 
 def first_dow(year, month, dow):
     day = ((8 + dow) - date(year, month, 1).weekday()) % 7
@@ -52,9 +48,8 @@ def part2(string: Str):
             break
     res.append(year)
     print(string)
-    list = string[:len(string)-1]
-    x = list.split(",")
-    print(x)
+    x = string.split(",")
+    x.pop()
     for i in range(len(x)): #12
         if(x[i] == 'weekday'):
             for y in range(5):
@@ -81,6 +76,7 @@ def part2(string: Str):
             if(x[i][6] == 's'):
                 res.append(first_dow(year, i+1,6))
     print(res)
+    return res
 
 @app.route('/calendarDays', methods=['POST'])          
 def calendar():
@@ -89,6 +85,5 @@ def calendar():
     part1_var = calendar_dates(numbers)
     part2_var = part2(part1_var)
 
-    return part1_var
-
     return {"part1": part1_var, "part2": part2_var}
+            
