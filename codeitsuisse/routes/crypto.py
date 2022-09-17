@@ -44,7 +44,7 @@ def crypo_fall():
     for arr in data:
         output.append(solve(arr))
 
-    r = Response(response=output, status=200, mimetype="application/json")
+    r = Response(output, mimetype='application/json')
     r.headers["Content-Type"] = "application/json"
     return r
     
