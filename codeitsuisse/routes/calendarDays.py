@@ -89,4 +89,6 @@ def calendar():
     part1_var = calendar_dates(numbers)
     part2_var = part2(part1_var)
 
+    return part1_var
+
     return {"part1": part1_var, "part2": part2_var}
