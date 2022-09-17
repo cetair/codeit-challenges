@@ -16,5 +16,13 @@ def evaluate():
     logging.info("My result :{}".format(result))
     return json.dumps(result)
 
+@app.route('/cubic', methods=['POST'])
+def evaluate2():
+    data = request.get_json()
+    logging.info("data sent for evaluation {}".format(data))
+    inputValue = data.get("input")
+    result = inputValue * inputValue * inputValue
+    logging.info("My result :{}".format(result))
+    return json.dumps(result)
 
 
