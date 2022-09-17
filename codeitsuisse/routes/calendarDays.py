@@ -86,7 +86,7 @@ def part2(string: Str):
 def calendar():
     data = request.get_json()
     numbers = data.get("numbers")
-    part1 = calendar_dates(numbers)
-    part2 = part2(part1)
+    part1_var = calendar_dates(numbers)
+    part2_var = part2(part1_var)
 
-    return {"part1": part1, "part2": part2}
+    return {"part1": part1_var, "part2": part2_var}

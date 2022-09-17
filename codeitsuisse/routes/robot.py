@@ -37,7 +37,6 @@ def shortest(player, coordinates):
 
     return coordinate, index
 
-#not yet optimazied
 @app.route("REST/message", methods=['POST'])
 def message():
     headers = {"Content-Type": "text/plain", "Accept": "text/plain"}
