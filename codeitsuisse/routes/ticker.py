@@ -163,12 +163,12 @@ def to_cumulative_delayed():
         else:
           cumulative_notional = 0
           digest = 0
+          if quantity >= quantity_block:
+            encounter.append(data[1])
           while quantity >= quantity_block:
             cumulative_notional += round(quantity_block * price, 1)
             digest += quantity_block
             quantity -= quantity_block
-
-          encounter.append(data[1])
 
           history[data[1]] = [quantity, round(quantity * price, 1), cumulative_notional, digest]
 
