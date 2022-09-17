@@ -4,6 +4,8 @@ from datetime import date
 from typing import List 
 import pandas as pd
 
+import logging
+
 from flask import request
 
 from codeitsuisse import app
@@ -83,7 +85,8 @@ def calendar():
     data = request.get_json()
     numbers = data.get("numbers")
     part1_var = calendar_dates(numbers)
+    logging.info(part1_var)
     part2_var = part2(part1_var)
-
+    logging.info(part2_var)
     return {"part1": part1_var, "part2": part2_var}
             
