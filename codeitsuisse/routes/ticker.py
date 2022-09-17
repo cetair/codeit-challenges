@@ -1,5 +1,5 @@
 import json
-from flask import request, jsonify
+from flask import request
 from codeitsuisse import app
 
 def check_insertion_condition(data_is_integer, array, index):
@@ -7,7 +7,7 @@ def check_insertion_condition(data_is_integer, array, index):
     return array[index] < array[index//2]
   else:
     return array[index][1].lower() < array[index//2][1].lower()
-
+    
 def insertion(array: list, data, data_is_integer: bool = True):
   array.append(data)
   index = len(array) - 1
@@ -35,6 +35,8 @@ def check_extract_min_condition(data_is_integer, array, index):
     left, right = array[index][1].lower(), array[index + 1][1].lower()
 
     return (current, left, index) if left < right else (current, right, index + 1)
+
+
 
 def extract_min(array: list, data_is_integer: bool = True):
   pop, array[0] = array[0], array[len(array) - 1]
@@ -64,12 +66,14 @@ def extract_min(array: list, data_is_integer: bool = True):
 
   return pop
 
+
 def heapsort(array: list):
   hashmap = {}
   trees = []
     
   # --- heapsort based on timestamp and ticker ---
   for line in array:
+    line = line.split(',')
     try:
       timestamp = int(line[0][:2]+line[0][3:])
       if timestamp in hashmap:                
@@ -85,30 +89,31 @@ def heapsort(array: list):
   return trees, hashmap
 
 @app.route('/tickerStreamPart1', methods=['POST'])
-def to_cumulative():
+def to_cumulative(stream: list):
   data = request.get_json()
   stream = data.get("stream")
   output = []
   history = {}
   sorted_timestamp, sorted_ticker = heapsort(stream)
-
   for _ in range(len(sorted_timestamp)):
     timestamp = extract_min(sorted_timestamp)
-    temp = f"{sorted_ticker[timestamp][0][0]} "
+    temp = f"{sorted_ticker[timestamp][0][0]},"
     for _ in range(len(sorted_ticker[timestamp])):
       data = extract_min(sorted_ticker[timestamp], False)
-      quantity, price = int(data[2]), float(data[3])
-      if data[1] in history:
-        history[data[1]][0] += quantity
-        history[data[1]][1] += round(quantity * price, 1)
-        history[data[1]][1] = round(history[data[1]][1], 1)
-      else:
-        history[data[1]] = [quantity, round(quantity * price, 1)]
-      
-      temp += f"{data[1]} {history[data[1]][0]} {history[data[1]][1]} "
+      try:
+        quantity, price = int(data[2]), float(data[3])
+        if data[1] in history:
+          history[data[1]][0] += quantity
+          history[data[1]][1] += round(quantity * price, 1)
+          history[data[1]][1] = round(history[data[1]][1], 1)
+        else:
+          history[data[1]] = [quantity, round(quantity * price, 1)]
+      except ValueError:
+        print("Error during Conversion Process")
+        return -1
+      temp += f"{data[1]},{history[data[1]][0]},{history[data[1]][1]},"
       
     temp = temp[:-1]
-    print(temp)
     output.append(temp)
 
   return json.dumps(output)
@@ -123,7 +128,6 @@ def to_cumulative_delayed():
   sorted_timestamp, sorted_ticker = heapsort(stream)
   for _ in range(len(sorted_timestamp)):
     timestamp = extract_min(sorted_timestamp)
-    # temp = f"{sorted_ticker[timestamp][0][0]} "
     for _ in range(len(sorted_ticker[timestamp])):
       data = extract_min(sorted_ticker[timestamp], False)
       try:
@@ -150,7 +154,7 @@ def to_cumulative_delayed():
             quantity -= quantity_block
             
           history[data[1]] = [quantity, round(quantity * price, 1)]
-
+  
       except ValueError:
         print("Error during Conversion Process")
         return -1
