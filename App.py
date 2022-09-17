@@ -5,7 +5,7 @@ logger = logging.getLogger(__name__)
 
 @app.route('/', methods=['GET'])
 def default_route():
-    return "Hello World 2"
+    return "Hello World 3"
 
 
 logger = logging.getLogger()
